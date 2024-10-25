@@ -33,7 +33,7 @@ app.use(express.json());//Middleware to parse json
 
 
 app.use(cors({
-    origin: 'http://localhost:5173' // Allow only this origin
+    origin: 'https://feedme-inky.vercel.app/' // Allow only this origin
 }));
 
 //This is the logic to add to the database
@@ -78,6 +78,6 @@ app.get('/',(req,res)=>{
     res.send("<h1>Welcome!!!!</h1>")
 })
 
-// app.get('*',(req,res)=>{
-//     res.sendFile(path.join(__dirname,"../client/dist/index.html"))
-// })
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,"../client/dist/index.html"))
+})
