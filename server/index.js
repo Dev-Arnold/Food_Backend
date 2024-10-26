@@ -11,6 +11,10 @@ const generalcontroller = require("./controllers/generalcontroller")
 
 const port = process.env.PORT || 3000
 
+mongoose.connect(process.env.MONGO_URI) 
+    .then(()=> app.listen(port,()=> console.log("connected"))) 
+    .catch(err=>console.log(err));
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const uploadDir = path.join(__dirname, '../../public/images'); // Absolute path to the images folder
@@ -81,6 +85,8 @@ app.put('/restaurants/:id', async (req, res) => {
 app.get('/',(req,res)=>{
     res.send("<h1>Welcome!!!!</h1>")
 })
+
+
 
 // app.get('*',(req,res)=>{
 //     res.sendFile(path.join(__dirname,"../client/dist/index.html"))
