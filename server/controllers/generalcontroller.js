@@ -9,7 +9,7 @@ require('dotenv').config();
 const foradding = async (req,res)=>{
     try {
         const { name, address, food_types, opening_time, closing_time, description, rating } = req.body;
-        const image = req.file ? `/images/${req.file.filename}` : null;
+        const image = req.file ?`/images/${req.file.filename}`: null;
 
         const newRestaurant = new Restaurant({
             name,
@@ -24,10 +24,10 @@ const foradding = async (req,res)=>{
         });
 
         await newRestaurant.save(); 
-        res.redirect('http://localhost:5173/admin/add');
+        res.status(201).json({ message: 'Restaurant added successfully!', restaurant: newRestaurant }); // Success response
     } catch (err) {
         console.error(err);
-        // res.status(500).send('Server error');
+        res.status(500).send('Server error');
     }
 }
 

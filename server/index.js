@@ -17,7 +17,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../public/images') // Where to store the files
+        cb(null, path.join(__dirname, '../../public/images'));
+        // cb(null, '../public/images') // Where to store the files
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname) // Naming the file
@@ -27,8 +28,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.use(express.static(path.join(__dirname,"../client/dist")))
-app.use(express.static(path.join(__dirname,"../public")))
+// app.use(express.static(path.join(__dirname,"../client/dist")))
+app.use('/images', express.static(path.join(__dirname, '../public/images')));
 app.use(express.json());//Middleware to parse json
 
 
