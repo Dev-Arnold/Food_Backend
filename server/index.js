@@ -33,7 +33,8 @@ app.use(express.json());//Middleware to parse json
 
 
 app.use(cors({
-    origin: 'https://feedme-inky.vercel.app' // Allow only this origin
+    // origin: 'https://feedme-inky.vercel.app' // Allow only this origin
+    origin: 'http://localhost:5173' // Allow only this origin
 }));
 
 //This is the logic to add to the database
