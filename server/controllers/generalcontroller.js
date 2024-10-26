@@ -10,7 +10,7 @@ const foradding = async (req,res)=>{
     try {
         const { name, address, food_types, opening_time, closing_time, description, rating } = req.body;
         const image = req.file ?`/images/${req.file.filename}`: null;
-
+        
         const newRestaurant = new Restaurant({
             name,
             address,
