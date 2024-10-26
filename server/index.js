@@ -11,17 +11,19 @@ const generalcontroller = require("./controllers/generalcontroller")
 
 const port = process.env.PORT || 3000
 
-mongoose.connect(process.env.MONGO_URI) 
-    .then(()=> app.listen(port,()=> console.log("connected"))) 
-    .catch(err=>console.log(err));
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../../public/images'));
-        // cb(null, '../public/images') // Where to store the files
+        const uploadDir = path.join(__dirname, '../../public/images'); // Absolute path to the images folder
+
+        // Check if the directory exists; if not, create it
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent folders
+        }
+
+        cb(null, uploadDir); // Set upload destination to the verified path
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname) // Naming the file
+        cb(null, Date.now() + '-' + file.originalname); // Generate unique filename
     }
 });
 
