@@ -4,10 +4,10 @@ const mongoose = require('mongoose')
 const path = require('path')
 require('dotenv').config();
 const cors = require('cors')
-// const User = require('./models/User')
-// const Restaurant = require("./models/Restaurant")
 const multer = require('multer');
-const generalcontroller = require("./controllers/generalcontroller")
+const cloudinary = require('cloudinary').v2;
+const {cloudinaryStorage, CloudinaryStorage} = require('multer-storage-cloudinary');
+const generalcontroller = require("./controllers/generalcontroller");
 
 const port = process.env.PORT || 3000
 
@@ -15,22 +15,19 @@ mongoose.connect(process.env.MONGO_URI)
     .then(()=> app.listen(port,()=> console.log("connected"))) 
     .catch(err=>console.log(err));
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const uploadDir = path.join(__dirname, '../../public/images'); // Absolute path to the images folder
+cloudinary.config({
+    cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+    api_key:process.env.CLOUDINARY_API_KEY,
+    api_secret:process.env.CLOUDINARY_API_SECRET,
+})
 
-        // Check if the directory exists; if not, create it
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent folders
-        }
-
-        cb(null, uploadDir); // Set upload destination to the verified path
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'restaurant-images',
+        allowedFormats: ['jpg', 'png', 'jpeg'],
     },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname); // Generate unique filename
-    }
 });
-
 
 const upload = multer({ storage: storage });
 
@@ -45,7 +42,7 @@ app.use(cors({
 }));
 
 //This is the logic to add to the database
-app.post('/add', upload.single('image'), generalcontroller.foradding);
+app.post('/add', upload.single('restaurantImage'), generalcontroller.foradding);
 
 //This is the logic to fetch the api from the database and send it as JSON.
 app.get('/api/restaurants', generalcontroller.for_restaurantapi)
