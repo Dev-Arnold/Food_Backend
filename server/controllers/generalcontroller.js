@@ -101,7 +101,7 @@ const for_Eachmenu = async (req,res)=>{
 const for_addmenu = async (req,res)=>{
     try{
         const {name,price,food_description,restaurant } = req.body;
-        const image = req.file ? `/images/${req.file.filename}` : null;
+        const image = req.file ? req.file.path : null;
 
         const newMenu = new Menu({
             name,

@@ -52,7 +52,7 @@ app.get('/api/fewrestaurants', generalcontroller.for_fewrestaurants);
 
 app.get('/api/allrestaurants',generalcontroller.for_allrestaurant)
 
-app.post('/add-menu', upload.single('image'),generalcontroller.for_addmenu)
+app.post('/add-menu', upload.single('restaurantImage'),generalcontroller.for_addmenu)
 
 app.get('/api/food-types',generalcontroller.for_foodtypes);
 
