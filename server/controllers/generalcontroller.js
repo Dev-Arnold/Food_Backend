@@ -90,8 +90,7 @@ const for_Eachmenu = async (req,res)=>{
         const menus = await Menu.find({restaurant: restaurantid})
             .populate('restaurant','address').populate('restaurant','description')
         res.json(menus)
-        // console.log(req.params)
-        // console.log('Menus found:', menus);
+                
     }
     catch(err){
         console.log(err)
@@ -112,21 +111,12 @@ const for_addmenu = async (req,res)=>{
         })
 
         await newMenu.save();
-        // res.redirect('http://localhost:5173/admin/add')
+        res.status(201).json({ message: 'Restaurant added successfully!', Menu: newMenu }); // Success response
     }catch(err){
         console.error(err);
     }
 
 }
-// const passwordToTest = 'nono';
-// bcrypt.hash(passwordToTest, 10).then(hashedPassword => {
-//   console.log("Hashed Password: ", hashedPassword);
-
-//   bcrypt.compare(passwordToTest, hashedPassword).then(result => {
-//     console.log("Password Match:", result); // Should print: true
-//   });
-// });
-
 
 const signup = async (req,res)=>{
     // const email_ent = await User.findOne({email});
@@ -216,6 +206,26 @@ const deleteone = async (req,res)=>{
     }
 }
 
+const updateone = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedData = {
+        ...req.body,
+        image: req.file ? `/images/${req.file.filename}` : req.body.image, // Use the new image if provided
+      };
+  
+      const updatedRestaurant = await Restaurant.findByIdAndUpdate(id, updatedData, { new: true });
+
+      const currentRestaurants = await Restaurant.find()
+      
+      if (!updatedRestaurant) return res.status(404).send('Restaurant not found');
+  
+      res.json({message:"Restaurant updated successfully!",data:currentRestaurants});
+    } catch (error) {
+      res.status(500).send('Server error');
+    }
+}
+
 module.exports = {
     foradding,
     for_restaurantapi,
@@ -226,5 +236,6 @@ module.exports = {
     for_addmenu,
     signup,
     signin,
-    deleteone
+    deleteone,
+    updateone
 }

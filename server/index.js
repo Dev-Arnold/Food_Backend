@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000
 mongoose.connect(process.env.MONGO_URI) 
     .then(()=> app.listen(port,()=> console.log("connected"))) 
     .catch(err=>console.log(err));
-
+    
 cloudinary.config({
     cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
     api_key:process.env.CLOUDINARY_API_KEY,
@@ -37,8 +37,8 @@ app.use(express.json());//Middleware to parse json
 
 
 app.use(cors({
-    origin: 'https://feedme-inky.vercel.app' // Allow only this origin
-    // origin: 'http://localhost:5173' // Allow only this origin
+    origin: ['https://feedme-inky.vercel.app','http://localhost:5173'], // Allow only this origin
+    optionsSuccessStatus: 200
 }));
 
 //This is the logic to add to the database
@@ -64,27 +64,8 @@ app.post('/sign-in',upload.single('image'), generalcontroller.signin)
 
 app.delete('/admin/allrestaurants/:id', generalcontroller.deleteone)
 
-app.put('/restaurants/:id', async (req, res) => {
-    try {
-      const { id } = req.params;
-      const updatedData = req.body; // The updated restaurant data
+app.put('/editrestaurant/:id', upload.single('image'), generalcontroller.updateone);
   
-      const updatedRestaurant = await Restaurant.findByIdAndUpdate(id, updatedData, { new: true });
-      
-      if (!updatedRestaurant) return res.status(404).send('Restaurant not found');
-  
-      res.json(updatedRestaurant);
-    } catch (error) {
-      res.status(500).send('Server error');
-    }
-  });
-  
-app.get('/',(req,res)=>{
-    res.send("<h1>Welcome!!!!</h1>")
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,"../client/dist/index.html"))
 })
-
-
-
-// app.get('*',(req,res)=>{
-//     res.sendFile(path.join(__dirname,"../client/dist/index.html"))
-// })
