@@ -64,6 +64,8 @@ app.post('/sign-in',upload.single('image'), generalcontroller.signin)
 
 app.delete('/admin/allrestaurants/:id', generalcontroller.deleteone)
 
+app.get('/restaurant/:id', generalcontroller.getone)
+
 app.put('/editrestaurant/:id', upload.single('image'), generalcontroller.updateone);
   
 app.get('*',(req,res)=>{

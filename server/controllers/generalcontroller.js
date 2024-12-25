@@ -206,6 +206,22 @@ const deleteone = async (req,res)=>{
     }
 }
 
+const getone = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const restaurant = await Restaurant.findById(id);
+
+        if (!restaurant) {
+            return res.status(404).json({ message: "Restaurant not found" });
+        }
+
+        res.json(restaurant);
+    } catch (error) {
+        console.log(`Error while fetching restaurant: ${error}`);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 const updateone = async (req, res) => {
     try {
       const { id } = req.params;
@@ -237,5 +253,6 @@ module.exports = {
     signup,
     signin,
     deleteone,
-    updateone
+    updateone,
+    getone
 }
