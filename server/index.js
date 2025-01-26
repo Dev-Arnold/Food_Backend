@@ -6,16 +6,18 @@ require('dotenv').config();
 const cors = require('cors')
 const restaurantRoutes = require('./routes/restaurantRoutes')
 const errorHandler = require('./middlewares/errorHandler')
+const connect = require('./dbConfig/dbconfig')
 
 const port = process.env.PORT || 3000
+app.use(express.json());//Middleware to parse json
 
-mongoose.connect(process.env.MONGO_URI) 
-    .then(()=> app.listen(port,()=> console.log("connected"))) 
-    .catch(err=>console.log(err));
+connect()
+// mongoose.connect(process.env.MONGO_URI) 
+//     .then(()=> app.listen(port,()=> console.log("connected"))) 
+//     .catch(err=>console.log(err));
     
 // app.use(express.static(path.join(__dirname,"../client/dist")))
 // app.use('/images', express.static(path.join(__dirname, '../public/images')));
-app.use(express.json());//Middleware to parse json
 
 
 app.use(cors({
@@ -34,15 +36,15 @@ app.use(errorHandler)
 
 // app.get('/api/allrestaurants',generalcontroller.for_allrestaurant)
 
-app.post('/add-menu', upload.single('restaurantImage'),generalcontroller.for_addmenu)
+// app.post('/add-menu', upload.single('restaurantImage'),generalcontroller.for_addmenu)
 
 // app.get('/api/food-types',generalcontroller.for_foodtypes);
 
-app.get('/menu/:restaurantid',generalcontroller.for_Eachmenu)
+// app.get('/menu/:restaurantid',generalcontroller.for_Eachmenu)
 
-app.post('/sign-up',upload.single('image'), generalcontroller.signup)
+// app.post('/sign-up',upload.single('image'), generalcontroller.signup)
 
-app.post('/sign-in',upload.single('image'), generalcontroller.signin)
+// app.post('/sign-in',upload.single('image'), generalcontroller.signin)
 
 // app.delete('/admin/allrestaurants/:id', generalcontroller.deleteone)
 

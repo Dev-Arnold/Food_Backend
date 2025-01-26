@@ -1,14 +1,5 @@
 const Menu = require('../models/Menu');
 
-
-
-
-
-
-
-
-
-
 const for_Eachmenu = async (req,res)=>{
     try{
         const {restaurantid} = req.params;

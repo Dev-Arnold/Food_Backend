@@ -1,4 +1,4 @@
-const jwt = require('jwt')
+const jwt = require('jsonwebtoken')
 
 const authorize = (allowedRoles) => (req, res, next) => {
     // console.log('Authorize middleware triggered');
