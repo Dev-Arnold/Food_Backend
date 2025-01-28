@@ -5,8 +5,11 @@ const path = require('path')
 require('dotenv').config();
 const cors = require('cors')
 const restaurantRoutes = require('./routes/restaurantRoutes')
+const menuRoutes = require('./routes/menuRoutes')
 const errorHandler = require('./middlewares/errorHandler')
 const connect = require('./dbConfig/dbconfig')
+const {swaggerDocs,swaggerUi} = require('./dbConfig/swagger')
+
 
 const port = process.env.PORT || 3000
 app.use(express.json());//Middleware to parse json
@@ -19,6 +22,7 @@ connect()
 // app.use(express.static(path.join(__dirname,"../client/dist")))
 // app.use('/images', express.static(path.join(__dirname, '../public/images')));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(cors({
     origin: ['https://feedme-inky.vercel.app','http://localhost:5173'], // Allow only this origin
@@ -26,6 +30,8 @@ app.use(cors({
 }));
 
 app.use('/restaurants',restaurantRoutes)
+
+app.use('/menu',menuRoutes)
 
 app.use(errorHandler)
 //This is the logic to fetch the api from the database and send it as JSON.
@@ -52,9 +58,9 @@ app.use(errorHandler)
 
 // app.put('/editrestaurant/:id', upload.single('image'), generalcontroller.updateone);
   
-app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname,"../client/dist/index.html"))
-})
+// app.get('*',(req,res)=>{
+//     res.sendFile(path.join(__dirname,"../client/dist/index.html"))
+// })
 
 app.listen(port,()=>{
     console.log(`Mongodb running on port ${port}`)

@@ -1,16 +1,14 @@
-// const swaggerJSDoc = require('swagger-jsdoc');
-// const swaggerUi = require('swagger-ui-express');
-import swaggerJSDoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 // Swagger options
 const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Cashup Backend',
+            title: 'Food backend',
             version: '1.0.0',
-            description: 'API documentation for the Cashup backend',
+            description: 'API documentation for the Food delivery backend',
         },
         servers: [{ url: 'http://localhost:3000' }],
     },
@@ -19,5 +17,5 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
-// module.exports = { swaggerDocs, swaggerUi };
-export {swaggerDocs, swaggerUi}
+module.exports = { swaggerDocs, swaggerUi };
+// export {swaggerDocs, swaggerUi}

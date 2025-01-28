@@ -2,9 +2,13 @@ const Restaurant = require('../models/Restaurant');
 
 const foradding = async (req,res,next)=>{
     try {
-        const { name, address, food_types, opening_time, closing_time, description, rating } = req.body;
+        let { name, address, food_types, opening_time, closing_time, description, rating } = req.body;
         const image = req.file ? req.file.path : null;
-        
+        if(!image) return res.status(404).send("File not found")
+
+        if (typeof food_types === 'string') {
+            food_types = JSON.parse(food_types);
+        }
         const newRestaurant = new Restaurant({
             name,
             address,
@@ -87,7 +91,8 @@ const for_foodtypes =  async (req, res,next) => {
         const foodTypes = await Restaurant.distinct('food_types');// This is mongoDB distinct which allows you to get the unique values for a specific field across all documents in your collection.
         if(!foodTypes) return res.status(404).json({message:"No food type found"})
         res.status(200).json(foodTypes);
-    } catch (err) {
+    }
+     catch (err) {
         console.error(`Error while fetching foodTypes : ${err}`);
         next(err)
     }
@@ -105,7 +110,7 @@ const getone = async (req, res,next) => {
         res.status(200).json(restaurant);
     } catch (error) {
         console.log(`Error while fetching restaurant: ${error}`);
-        next(err)
+        next(error)
     }
 };
 
