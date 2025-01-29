@@ -46,14 +46,12 @@ const restaurantFilter = async (req,res,next)=>{
                 { food_types: { $regex: search, $options: 'i' } }
             ];
         }
+        console.log(query)
         
         const restaurants = await Restaurant.find(query);
         if(!restaurants) return res.status(404).json({message:"No restaurants found"})
         res.status(200).json(restaurants);
 
-        // Restaurant.find()
-        //     .then(response=>res.json(response))
-        //     .catch(err=>console.log(err))
     } catch (error) {
         console.error(`Error while filtering : ${err}`);
         next(err)

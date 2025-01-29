@@ -94,6 +94,25 @@ router.post('/add', authorize(["Admin", "Staff"]), upload.single('image'), forad
  */
 router.get('/', for_allrestaurant);
 
+/**
+ * @swagger
+ * /api/restaurant/filter:
+ *   get:
+ *     summary: Search for restaurants
+ *     tags: [Restaurants]
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Search by restaurant name
+ *     responses:
+ *       200:
+ *         description: List of matching restaurants
+ */
+router.get('/filter', restaurantFilter);
+
 router.get('/few',for_fewrestaurants)
 
 /**
@@ -149,24 +168,6 @@ router.get('/food-types', for_foodtypes);
  */
 router.get('/:id', getone);
 
-/**
- * @swagger
- * /api/restaurant/filter:
- *   get:
- *     summary: Search for restaurants
- *     tags: [Restaurants]
- *     parameters:
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *         required: false
- *         description: Search by restaurant name
- *     responses:
- *       200:
- *         description: List of matching restaurants
- */
-router.get('/filter', restaurantFilter);
 
 /**
  * @swagger
