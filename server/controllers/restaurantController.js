@@ -32,7 +32,6 @@ const foradding = async (req,res,next)=>{
 const restaurantFilter = async (req,res,next)=>{
     try {
         const { foodtype, search } = req.query;
-        // console.log(req.query)
         let query = {};
         
         if (foodtype) {
@@ -46,7 +45,6 @@ const restaurantFilter = async (req,res,next)=>{
                 { food_types: { $regex: search, $options: 'i' } }
             ];
         }
-        console.log(query)
         
         const restaurants = await Restaurant.find(query);
         if(!restaurants) return res.status(404).json({message:"No restaurants found"})
