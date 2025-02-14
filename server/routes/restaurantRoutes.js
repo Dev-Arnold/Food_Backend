@@ -4,7 +4,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const { foradding, for_allrestaurant, getone, restaurantFilter, for_foodtypes, updateone, deleteone, for_fewrestaurants } = require('../controllers/restaurantController');
-const authorize = require('../middlewares/authorize');
+const authorize = require('../middlewares/authorize2');
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

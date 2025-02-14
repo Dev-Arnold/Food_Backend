@@ -6,6 +6,7 @@ require('dotenv').config();
 const cors = require('cors')
 const restaurantRoutes = require('./routes/restaurantRoutes')
 const menuRoutes = require('./routes/menuRoutes')
+const userRoutes = require('./routes/userRoutes')
 const errorHandler = require('./middlewares/errorHandler')
 const connect = require('./dbConfig/dbconfig')
 const {swaggerDocs,swaggerUi} = require('./dbConfig/swagger')
@@ -32,6 +33,8 @@ app.use(cors({
 app.use('/restaurants',restaurantRoutes)
 
 app.use('/menu',menuRoutes)
+
+app.use('/user',userRoutes)
 
 app.use(errorHandler)
 //This is the logic to fetch the api from the database and send it as JSON.

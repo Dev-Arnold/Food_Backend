@@ -61,9 +61,16 @@ const signin = async (req, res, next) => {
       { expiresIn: "1h" }
     );
 
+     // Set the token as an HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true,  // Prevents JavaScript access for security
+      secure: true,    // Use true in production (HTTPS required)
+      sameSite: "strict", // Prevent CSRF attacks
+    });
+
     const username = user ? user.username : "";
 
-    res.json({ token, message: "Login successful!", username });
+    res.json({ message: "Login successful!", username });
   } catch (err) {
     console.log(`Error while trying to login : ${err}`);
     next(err);
