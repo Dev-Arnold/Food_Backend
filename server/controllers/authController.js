@@ -29,7 +29,7 @@ const signup = async (req, res, next) => {
       email,
       // tel,
       password: hashedpassword,
-      role: "user",
+      role: "User",
     });
 
     await newUser.save();
