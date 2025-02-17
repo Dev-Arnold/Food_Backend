@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const User = require("../models/User");
+const cookieParser = require("cookie-parser");
 
 const signup = async (req, res, next) => {
   // const email_ent = await User.findOne({email});
@@ -64,13 +65,15 @@ const signin = async (req, res, next) => {
      // Set the token as an HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,  // Prevents JavaScript access for security
-      secure: true,    // Use true in production (HTTPS required)
+      secure: process.env.NODE_ENV === "production",   // Use true in production (HTTPS required)
       sameSite: "strict", // Prevent CSRF attacks
     });
 
+    console.log("The token = " + token )
     const username = user ? user.username : "";
+    const userRole = user ? user.role : "";
 
-    res.json({ message: "Login successful!", username });
+    res.json({ message: "Login successful!", username, userRole });
   } catch (err) {
     console.log(`Error while trying to login : ${err}`);
     next(err);

@@ -4,29 +4,27 @@ const mongoose = require('mongoose')
 const path = require('path')
 require('dotenv').config();
 const cors = require('cors')
+const cookieParser = require("cookie-parser");
 const restaurantRoutes = require('./routes/restaurantRoutes')
 const menuRoutes = require('./routes/menuRoutes')
 const userRoutes = require('./routes/userRoutes')
 const errorHandler = require('./middlewares/errorHandler')
 const connect = require('./dbConfig/dbconfig')
 const {swaggerDocs,swaggerUi} = require('./dbConfig/swagger')
-
-
 const port = process.env.PORT || 3000
+
 app.use(express.json());//Middleware to parse json
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 connect()
-// mongoose.connect(process.env.MONGO_URI) 
-//     .then(()=> app.listen(port,()=> console.log("connected"))) 
-//     .catch(err=>console.log(err));
-    
-// app.use(express.static(path.join(__dirname,"../client/dist")))
-// app.use('/images', express.static(path.join(__dirname, '../public/images')));
+
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(cors({
     origin: ['https://feedme-inky.vercel.app','http://localhost:5173'], // Allow only this origin
+    credentials: true,
     optionsSuccessStatus: 200
 }));
 
@@ -35,6 +33,7 @@ app.use('/restaurants',restaurantRoutes)
 app.use('/menu',menuRoutes)
 
 app.use('/user',userRoutes)
+
 
 app.use(errorHandler)
 //This is the logic to fetch the api from the database and send it as JSON.

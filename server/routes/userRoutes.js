@@ -1,5 +1,6 @@
 const express = require('express');
 const { signup, signin, forgot_password, reset_password } = require('../controllers/authController');
+const authorize = require('../middlewares/authorize');
 const router = express.Router();
 
 /**
@@ -71,6 +72,17 @@ router.post('/',signup);
 
 router.post('/login',signin);
 
+//get the current user
+router.get('/me', authorize(["Admin","Staff","User"]), (req, res) => {
+    try {
+        if(!req.user) return res.status(404).json({message:"User not found"})
+        res.json({ user: req.user });
+    } catch (error) {
+        console.error(`Error while fetching current user : ${err}`);
+        next(err)
+    }
+});
+
 /**
  * @swagger
  * /user/forgot-password:
@@ -135,5 +147,7 @@ router.post('/forgot-password', forgot_password);
  */
 
 router.post('/reset-password/:token', reset_password);
+
+
 
 module.exports = router;
